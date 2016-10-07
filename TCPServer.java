@@ -8,24 +8,27 @@ import java.net.Socket;
 public class TCPServer {
 	public final static int PORT = 9999;
 	public final static String ADDRESS = "127.0.0.1";
+	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException{
+		ServerSocket socket = null;
 		try {
-			ServerSocket socket = new ServerSocket(PORT);
+			socket = new ServerSocket(PORT);
 			Socket client = null;
 			System.out.println("Server open!");
 			while (true) {
 				client = socket.accept();
-				System.out.println("connect success");
+				System.out.println(client+" connect success");
 				//asdasd
 //				ServerThread thread = new ServerThread(client);
 //				thread.start();
 				new Thread(new ServerThread(client)).start();
 			}
-			// socket.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
-
+		}finally {
+			if(socket != null)
+				socket.close();
 		}
 
 	}
